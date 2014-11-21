@@ -1,3 +1,4 @@
+<!-- scratch card by MT 20141121 -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -34,28 +35,27 @@
 <script type="text/javascript">
 ({
 	init:function(){
-		this.createCanvas();//初始化变量，创建canvas，获得ctx,
-		this.decorateCanvas();//给canvas添加朦胧层
+		this.createCanvas();//初始化变量，创建canvas，获得ctx,初始化ctx，给canvas添加朦胧层
 		this.radius = 20;//小圆半径
 		this.color = "#000";//小圆填充颜色
 		this.createPointCircle();//给ctx创建点击出现小圆的方法
 		this.bindMousemove();//绑定鼠标移动的方法
+		this.makeSmooth();//优化mousemove，使小圆点更连续
 		window.canvas = this.canvas;
 		window.ctx = this.ctx;
 	},
 	createCanvas:function(){
-		this.bg = document.getElementById('bg');
-		this.canvas = document.createElement('canvas');
-		this.ctx = this.canvas.getContext("2d");
-		this.ctx.globalCompositeOperation = "destination-out";//【关键】目标图片与canvas的显示形式
+		// 初始化重要变量
+		var bg = this.bg = document.getElementById('bg');
+		var canvas = this.canvas = document.createElement('canvas');
+		var ctx = this.ctx = this.canvas.getContext("2d");
 		var w = bg.offsetWidth,h = bg.offsetHeight;
-		this.canvas.width = w;//与目标图片同宽高
-		this.canvas.height = h;
-		this.bg.appendChild(this.canvas);
-	},
-	decorateCanvas:function(){
-		this.ctx.fillSytle = "rgba(0,0,0,.5)";
-		this.ctx.fill();
+		canvas.width = w;//与目标图片同宽高
+		canvas.height = h;
+		ctx.fillStyle = "rgba(0,0,0,.8)";
+		ctx.fillRect(0,0,w,h);
+		ctx.globalCompositeOperation = "destination-out";//【关键】目标图片与canvas的显示形式
+		bg.appendChild(this.canvas);
 	},
 	createPointCircle:function(){
 		//点击出现小圆的方法
@@ -68,33 +68,27 @@
 		}
 	},
 	bindMousemove:function(){
-		var canvas = this.canvas,ctx = this.ctx,
+		var bg = this.bg,canvas = this.canvas,ctx = this.ctx,
 			radius = this.radius,color = this.color;
+		this.isMouseDown = false;
 		canvas.addEventListener("mousemove",function(e){
-			var x = e.pageX - canvas.offsetLeft,
-				y = e.pageY - canvas.offsetTop;
+			if(!this.isMouseDown)
+				return;
+			var x = e.pageX - bg.offsetLeft,
+			y = e.pageY - bg.offsetTop;
 			ctx.createPointCircle(x,y,radius,color);
 		});
-			
+		canvas.addEventListener("mousedown",function(){
+			this.isMouseDown = true;//mousedown的时候增加标记
+		});
+		canvas.addEventListener("mouseup",function(){
+			this.isMouseDown = false;
+		});
+	},
+	makeSmooth:function(){
+		//TODO
 	}
 
 }).init();//启动初始化方法,暴走吧！！！
-		
-		
-		
-	
-	// ctx.fillStyle = 'rgba(0,0,0,.5)';
-	// ctx.
-	// ctx.createCircle = function(x,y,radius,fillColor){
-	// 	this.fillStyle=fillColor;
-	// 	this.beginPath();
-	// 	this.arc(x,y,radius,0,2*Math.PI);
-	// 	this.closePath();
-	// 	this.fill();
-	// }
-	// canvas.addEventListener('mousemove',function(e){
-	// 	ctx.createCircle(e.layoutX,e.loyoutY,20,'#000');
-	// });
-	
 </script>
 </html>
