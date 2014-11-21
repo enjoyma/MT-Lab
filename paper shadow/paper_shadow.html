@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+<style type="text/css">
+body{
+	background: #eee;
+}
+.shadow{
+	/*box-shadow: 0 -1px 10px #777;*/
+	position: relative;
+	background: #fff;
+	width:600px;
+	height:200px;
+	margin:100px auto 0;
+}
+.shadow:before,.shadow:after{
+	display: block;
+	position: absolute;
+	bottom:10px;
+	content:"";/*注意点*/
+	background:#777;
+	box-shadow:0 15px 10px #777;
+	width:300px;
+	height:50px;
+	z-index:-1;
+}
+.shadow:before{
+	left:5px;
+	transform:rotate(-4deg);
+	-webkit-transform: rotate(-4deg);
+	-moz-transform: rotate(-4deg);
+	-o-transform: rotate(-4deg);
+	-ms-transform: rotate(-4deg);
+}
+.shadow:after{
+	right:5px;
+	transform:rotate(4deg);
+	-webkit-transform: rotate(4deg);
+	-moz-transform: rotate(4deg);
+	-o-transform: rotate(4deg);
+	-ms-transform: rotate(4deg);
+}
+</style>
+</head>
+<body>
+	<div class="shadow"></div>
+</body>
+</html>
