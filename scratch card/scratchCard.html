@@ -35,6 +35,8 @@
 <script type="text/javascript">
 ({
 	init:function(){
+		if(!this.isSupportCanvas())
+			return;
 		this.createCanvas();//初始化变量，创建canvas，获得ctx,初始化ctx，给canvas添加朦胧层
 		this.radius = 20;//小圆半径
 		this.color = "#000";//小圆填充颜色
@@ -43,6 +45,16 @@
 		this.makeSmooth();//优化mousemove，使小圆点更连续
 		window.canvas = this.canvas;
 		window.ctx = this.ctx;
+	},
+	isSupportCanvas:function(){
+		try{
+			document.createElement('canvas').getContext('2d');
+			return true;
+		}catch(e){
+			alert("抱歉！您的浏览器不支持canvas！"+e);
+			throw "抱歉！您的浏览器不支持canvas！"+e;
+			return false;
+		}
 	},
 	createCanvas:function(){
 		// 初始化重要变量
