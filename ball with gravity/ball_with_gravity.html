@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>ball with gravity by MT</title>
+</head>
+<style type="text/css">
+div#bg{
+	width:990px;
+	height:600px;
+	margin:100px auto 0;
+}
+</style>
+<body>
+	<div id="bg"></div>
+</body>
+<script type="text/javascript">
+({
+	init:function(){
+		if(!this.isSupportCanvas())
+			return;
+		this.createCanvas();
+		this.createBackground();
+		this.makeTheBallFreeFall();
+	},
+	isSupportCanvas:function(){
+		try{
+			document.createElement('canvas').getContext('2d');
+			return true;
+		}catch(e){
+			throw "抱歉！您的浏览器不支持canvas！";
+			return false;
+		}
+	},
+	createCanvas:function(){
+		var canvas = this.canvas = document.createElement('canvas');
+		var ctx = this.ctx = canvas.getContext('2d');
+		var bg = this.bg = document.getElementById('bg');
+		canvas.width = bg.offsetWidth;
+		canvas.height = bg.offsetHeight;
+		canvas.innerText = "抱歉！您的浏览器不支持canvas！";
+		bg.appendChild(canvas);
+	},
+	createBackground:function(){
+		var canvas = this.canvas,ctx = this.ctx,w = canvas.width,h = canvas.height,
+			textBgX = 30,textBgY = 30,textBgW = 200,textBgH = 60;
+		//创建背景
+		ctx.fillStyle = "#777";
+		ctx.fillRect(0,0,w,h);
+		//创建边框
+		ctx.strokeStyle = "#000";
+		ctx.lineWidth = 10;
+		ctx.strokeRect(0,0,w,h);
+		//直线拼边框
+		// ctx.moveTo(0,0);
+		// ctx.lineTo(w,0);
+		// ctx.lineTo(w,h);
+		// ctx.lineTo(0,h);
+		// ctx.lineWidth = '3';
+		// ctx.closePath();
+		// ctx.stroke();
+		// ctx.lineJoin = 'bevel';//边角样式round
+		//给文字留出区域
+		ctx.clearRect(textBgX,textBgY,textBgW,textBgH);
+		//文字区域边框
+		ctx.strokeStyle = "blue";
+		ctx.lineWidth = 2;
+		ctx.strokeRect(textBgX,textBgY,textBgW,textBgH);
+		//填写文字
+		ctx.font = "20px bold arial";
+		ctx.textAlign = "left";
+		ctx.strokeStyle = '#ae81ff';
+		ctx.strokeText("小球自由落体运动",textBgX+20,textBgY+35);
+	},
+	makeTheBallFreeFall:function(){
+		var canvas = this.canvas,ctx = this.ctx,w = canvas.width,h = canvas.height,self = this;
+		this.posX = w/2,this.posY = 100;
+		this.timer = setInterval(function(){
+			//去除上一个状态的小球
+			ctx.fillStyle = "#777";
+			ctx.fillRect(250,10,w-250-10,h-20);
+			self.controlBall();
+			// console.log(ctx);
+		},30);
+	},
+	controlBall:function(){
+		var ctx = this.ctx,w = this.canvas.width,h = this.canvas.height,x = this.posX,y = this.posY;
+		ctx.beginPath();
+		ctx.fillStyle = "#fff";
+		ctx.arc(x,y,20,0,2*Math.PI);
+		ctx.closePath();
+		ctx.fill();
+		this.posY+=5;
+		if(y >= h-20-5)
+			clearInterval(this.timer);//停止小球
+	}
+}).init();
+</script>
+</html>

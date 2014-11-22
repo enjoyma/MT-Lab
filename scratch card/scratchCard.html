@@ -39,7 +39,7 @@
 			return;
 		this.createCanvas();//初始化变量，创建canvas，获得ctx,初始化ctx，给canvas添加朦胧层
 		this.radius = 20;//小圆半径
-		this.color = "#000";//小圆填充颜色
+		this.color = "#FFF";//小圆填充颜色
 		this.createPointCircle();//给ctx创建点击出现小圆的方法
 		this.bindMousemove();//绑定鼠标移动的方法
 		this.makeSmooth();//优化mousemove，使小圆点更连续
@@ -64,6 +64,7 @@
 		var w = bg.offsetWidth,h = bg.offsetHeight;
 		canvas.width = w;//与目标图片同宽高
 		canvas.height = h;
+		canvas.innerText = "抱歉！您的浏览器不支持canvas！";//不支持canvas时显示的文字
 		ctx.fillStyle = "rgba(0,0,0,.8)";
 		ctx.fillRect(0,0,w,h);
 		ctx.globalCompositeOperation = "destination-out";//【关键】目标图片与canvas的显示形式
